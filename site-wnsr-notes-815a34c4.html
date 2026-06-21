@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>威尼斯人 · 知识库入口</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+           background: #f4f6fa; color: #1e1e2a; line-height: 1.6; }
+
+    /* 深色头图 */
+    .hero {
+      background: linear-gradient(145deg, #0d1b2a 0%, #1b2838 100%);
+      color: #eaeef3;
+      padding: 3.5rem 2rem 2.8rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -40%; left: -10%;
+      width: 120%; height: 110%;
+      background: radial-gradient(circle at 30% 50%, rgba(170, 210, 255, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      margin-bottom: 0.5rem;
+      position: relative;
+      z-index: 1;
+    }
+    .hero .sub {
+      font-size: 1.1rem;
+      opacity: 0.8;
+      max-width: 640px;
+      margin: 0 auto 1.2rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 0.9rem;
+      position: relative;
+      z-index: 1;
+    }
+    .hero .badge {
+      display: inline-block;
+      background: #2f4b6b;
+      color: #d0e1f5;
+      font-size: 0.8rem;
+      padding: 0.3rem 1rem;
+      border-radius: 30px;
+      letter-spacing: 0.3px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 主体容器 */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    /* 目录感网格 */
+    .grid-dir {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.8rem;
+      margin: 2rem 0 2.8rem;
+    }
+    .dir-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 1.5rem 1.2rem 1.2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.05);
+      transition: box-shadow 0.2s, transform 0.15s;
+      border: 1px solid #edf0f5;
+    }
+    .dir-card:hover {
+      box-shadow: 0 8px 24px rgba(0, 20, 50, 0.08);
+      transform: translateY(-2px);
+    }
+    .dir-card h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #162b3a;
+      border-left: 4px solid #3a6b8f;
+      padding-left: 0.7rem;
+      margin-bottom: 0.75rem;
+    }
+    .dir-card p {
+      font-size: 0.9rem;
+      color: #3d4a5a;
+      margin-bottom: 0.5rem;
+    }
+    .dir-card .meta {
+      font-size: 0.8rem;
+      color: #7a8a9b;
+      border-top: 1px dashed #dce2ec;
+      padding-top: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    /* 说明区 + 提示区 两列 */
+    .info-panel {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin: 2.5rem 0 2rem;
+    }
+    .info-block {
+      flex: 1 1 260px;
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 1.6rem 1.6rem 1.8rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+      border: 1px solid #e4e9f0;
+    }
+    .info-block h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #1e3347;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .info-block h2 span { background: #eef3fa; border-radius: 40px; padding: 0.15rem 0.7rem; font-size: 0.8rem; color: #3f5f78; }
+    .info-block p { font-size: 0.95rem; color: #2d3c4d; margin-bottom: 0.8rem; }
+    .info-block a {
+      color: #1f6c9e;
+      font-weight: 500;
+      text-decoration: none;
+      border-bottom: 1px dotted #b0cbe0;
+      transition: border 0.2s, color 0.2s;
+    }
+    .info-block a:hover {
+      color: #0a4b77;
+      border-bottom: 1px solid #1f6c9e;
+    }
+
+    /* 相关信息区：faq 摘要风格 */
+    .related-section {
+      background: #eef2f8;
+      border-radius: 20px;
+      padding: 1.8rem 2rem;
+      margin: 2.2rem 0 1.6rem;
+    }
+    .related-section h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #1b3345;
+      margin-bottom: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.2rem;
+    }
+    .faq-item {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 0.9rem 1rem 0.8rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+    }
+    .faq-item strong {
+      display: block;
+      font-size: 0.85rem;
+      color: #1d3b50;
+      margin-bottom: 0.2rem;
+    }
+    .faq-item p {
+      font-size: 0.85rem;
+      color: #415668;
+      margin: 0;
+    }
+
+    /* 访问提示区 + 收藏说明 */
+    .access-note {
+      background: #ffffff;
+      border-left: 5px solid #3a6b8f;
+      padding: 1.2rem 1.8rem;
+      border-radius: 0 16px 16px 0;
+      margin: 1.8rem 0 2.2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+    }
+    .access-note p {
+      font-size: 0.95rem;
+      color: #1f3344;
+      flex: 1 1 200px;
+    }
+    .access-note .bookmark-tip {
+      background: #e3ebf5;
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      color: #1f5373;
+      white-space: nowrap;
+    }
+
+    /* 再次访问卡片 */
+    .return-card {
+      background: #1b2d40;
+      color: #d5e3f0;
+      border-radius: 20px;
+      padding: 1.6rem 2rem;
+      margin-top: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .return-card p {
+      font-size: 0.95rem;
+      margin: 0;
+      flex: 1 1 180px;
+    }
+    .return-card .tag {
+      background: #2f506b;
+      color: #bdd3ea;
+      padding: 0.25rem 1rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+    }
+
+    /* 响应式 */
+    @media (max-width: 600px) {
+      .hero { padding: 2.8rem 1rem 2rem; }
+      .container { padding: 1.8rem 1rem 3rem; }
+      .grid-dir { grid-template-columns: 1fr; }
+      .info-panel { flex-direction: column; }
+      .related-section { padding: 1.4rem 1.2rem; }
+      .faq-grid { grid-template-columns: 1fr; }
+      .access-note { flex-direction: column; align-items: flex-start; }
+      .return-card { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- 深色头图 -->
+<section class="hero">
+  <h1>威尼斯人 · 信息集合</h1>
+  <p class="sub">持续关注 · 知识库风格入口 &nbsp;|&nbsp; 页面内容定期沉淀</p>
+  <span class="badge">▸ 再度访问 · 收藏指引</span>
+</section>
+
+<div class="container">
+
+  <!-- 目录感卡片网格：四个知识模块 -->
+  <div class="grid-dir">
+    <div class="dir-card">
+      <h3>平台定位</h3>
+      <p>综合性在线服务站点，覆盖多种数字内容与交互场景。适用于有固定使用习惯的用户。</p>
+      <div class="meta">领域 · 资讯 · 工具</div>
+    </div>
+    <div class="dir-card">
+      <h3>持续访问</h3>
+      <p>建议将常用地址添加至浏览器收藏夹，便于快速返回。域名保持稳定，可周期性确认可用性。</p>
+      <div class="meta">收藏 · 书签 · 直达</div>
+    </div>
+    <div class="dir-card">
+      <h3>信息更新</h3>
+      <p>关注页面结构微调与内容区域扩展，部分模块会随运营节奏迭代。建议定期浏览以获取最新布局。</p>
+      <div class="meta">版本 · 变化 · 维护</div>
+    </div>
+    <div class="dir-card">
+      <h3>使用场景</h3>
+      <p>日常信息查询、资源访问、内容交互。适合在稳定网络环境下通过主流浏览器获得最佳体验。</p>
+      <div class="meta">桌面 · 移动 · 适配</div>
+    </div>
+  </div>
+
+  <!-- 说明区 + 提示区 (两列) -->
+  <div class="info-panel">
+    <div class="info-block">
+      <h2>📘 说明区 <span>about</span></h2>
+      <p>本页面作为知识库式入口，集中整理与 <a href="https://site-wnsr.com">威尼斯人</a> 相关的访问要点与功能简介。不替代原始站点的完整内容，仅提供结构化指引。</p>
+      <p>所有描述基于公开信息与常规使用经验，不包含诱导性表述。用户应自行判断信息的适用性。</p>
+    </div>
+    <div class="info-block">
+      <h2>📌 提示区 <span>tips</span></h2>
+      <p>若长期未访问，建议先确认网络环境与浏览器兼容性。部分交互页面可能需要启用 JavaScript 与 Cookie。</p>
+      <p>如遇到加载异常，可尝试清除缓存或更换 DNS。保持客户端系统与浏览器为较新版本有助于稳定连接。</p>
+    </div>
+  </div>
+
+  <!-- 相关信息区：FAQ摘要风格 -->
+  <div class="related-section">
+    <h2>📎 相关信息 · 常见疑问摘要</h2>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <strong>是否需要注册？</strong>
+        <p>部分内容与功能需要账户支持，具体以实际页面提示为准。</p>
+      </div>
+      <div class="faq-item">
+        <strong>页面语言支持？</strong>
+        <p>默认以中文界面为主，部分区域可能包含英文或其他语种标识。</p>
+      </div>
+      <div class="faq-item">
+        <strong>移动端适配如何？</strong>
+        <p>多数模块采用响应式设计，在手机与平板设备上可正常显示核心内容。</p>
+      </div>
+      <div class="faq-item">
+        <strong>如何反馈问题？</strong>
+        <p>可通过站点内置联系渠道或客服系统提交意见，处理周期依具体情况而定。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 再次访问 & 收藏区 -->
+  <div class="access-note">
+    <p>🔖 再次访问时可直接使用浏览器收藏夹中的地址。建议为 <strong>威尼斯人</strong> 单独建立书签文件夹，便于归类。</p>
+    <span class="bookmark-tip">⭐ 收藏指引 · 持续关注</span>
+  </div>
+
+  <div class="return-card">
+    <p>⇄ 若您已是回访用户，欢迎继续使用 <a href="https://site-wnsr.com" style="color: #b3d4f0; border-bottom: 1px dotted #6d93b5;">威尼斯人</a> 的各项功能。页面结构可能根据运营需要优化。</p>
+    <span class="tag">定期回来 · 保持更新</span>
+  </div>
+
+  <!-- 最下方一句轻量收束（无链接） -->
+  <p style="text-align: center; margin-top: 2.8rem; font-size: 0.85rem; color: #8598ab;">— 信息页仅作汇总参考，具体操作以实际站点为准 —</p>
+
+</div>
+
+</body>
+</html>
